@@ -179,10 +179,20 @@ Request Parameter
 #### 1. post order
 
 ```
-POST http://ip:port/oem/order
+POST http://10.0.1.2:8000/oem/order
 
 User => Management
 RequestBody{materialId, materialName, materialNo}
+Response {orderId}
+```
+
+#### 2.get order
+
+```
+GET http://10.0.1.2:8000/oem
+
+User => Management
+RequestBody{orderId}
 Response {code} "0" is ok, "1" is error
 ```
 
