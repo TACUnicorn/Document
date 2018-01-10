@@ -248,7 +248,7 @@
 
 - View order
 
-  - URL: `GET/facotry/orders`
+  - URL: `GET /facotry/orders`
 
   - Body
 
@@ -281,7 +281,7 @@
 #### 1. post order
 
 ```
-POST http://ip:port/oem/order
+POST http://10.0.1.2:8000/oem/order
 
 User => Management
 RequestBody {materialId, materialName, materialNo, oem}
@@ -314,7 +314,7 @@ Response {[orderId, materialId, materialName, materialNo, amount, time, oem]}
 #### 1. post order
 
 ```
-POST http://ip:port/components/order
+POST http://10.0.1.2:8086/components/order
 
 User => Management
 RequestBody {componentsId, componentsName, componentsNo}
@@ -338,7 +338,7 @@ Response {code} "0" is ok, "1" is error
 #### 1. transfer
 
 ```
-POST http://ip:port/bank/transfer 
+POST http://10.0.1.2:8085/bank/transfer 
 
 User => FinanceSystem
 RequestBody {fromAcount, toAccount, sum}
@@ -349,7 +349,7 @@ Response {code} "0" is ok, "1" is error
 
 ```
 User => User
-GET http://ip:port/bank/balance/{account}
+GET http://10.0.1.2:8085/bank/balance/{account}
 Response {num} num is balance
 ```
 
@@ -360,7 +360,7 @@ Response {num} num is balance
 URL
 
 ```
-http://localhost:3223/finance/transfer
+http://10.0.1.2:3223/finance/transfer
 ```
 
 POST 
@@ -395,7 +395,7 @@ Response
 URL
 
 ```
-http://localhost:3224/finance/bill?start=2017-12-30
+http://10.0.1.2:3224/finance/bill?start=2017-12-30
 ```
 
 HTTP Mode
@@ -434,7 +434,7 @@ Response
 URL
 
 ```
-http://ip:port/express/deliver
+http://10.0.1.2:8001/express/deliver
 ```
 
 HTTP Mode
@@ -470,7 +470,7 @@ Response
 URL
 
 ```
-http://10.0.1.52:8001/express/deliveries
+http://10.0.1.2:8001/express/deliveries
 ```
 
 HTTP Mode
