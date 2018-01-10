@@ -123,6 +123,7 @@ under ``TAC Public``, my IP Address is ``10.0.1.2``.
 | bank          | 8085  |
 | components    | 8086  |
 | oem-adapter   | 8000  |
+| delivery      | 8001  |
 
 ### Service Summary
 
