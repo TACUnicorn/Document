@@ -58,7 +58,7 @@
 - Product Information
   - Check Product list
 
-    - URL `GET /products  `
+    - URL `GET /warehouse/products  `
 
     - Authority `SUPER` `PRODUCT_MANAGEMENT`
 
@@ -82,7 +82,7 @@
 
   - Create new product entry
 
-    - URL  `POST /product`
+    - URL  `POST /warehouse/product`
 
     - Authority `SUPER` `CREATE_PRODUCT`
 
@@ -98,15 +98,15 @@
 
   - Modify product info
 
-    - URL `PUT /product/{product_id}`
+    - URL `PUT /warehouse/product/{product_id}`
 
     - Body
 
       ```json
       {
-        "name":"Mac Pro", 
-        "description":"Mac has always been built around a singular vision: to create machines that are as powerful and functional as they are beautiful and intuitive. Mac Pro is a stunning realization of that ideal. All the elements that define a pro computer — graphics, storage, expansion, processing power, and memory — have been rethought and reengineered. So you have the power and performance to bring your biggest ideas to life.", 
-        "price":20888
+        "name": "Mac Pro", 
+        "description": "Mac has always been built around a singular vision: to create machines that are as powerful and functional as they are beautiful and intuitive. Mac Pro is a stunning realization of that ideal. All the elements that define a pro computer — graphics, storage, expansion, processing power, and memory — have been rethought and reengineered. So you have the power and performance to bring your biggest ideas to life.", 
+        "price": 20888
       }
       ```
 
@@ -114,7 +114,7 @@
 
   - View transfer history
 
-    - URL `GET /product/transfer?start=date&end=date&state=()`
+    - URL `GET /warehouse/product/transfers?start=date&end=date&state=()`
 
     - Body
 
@@ -163,12 +163,11 @@
       }
       ```
 
-      ​
 
 
   - Put/Fetch product request
 
-    - URL `POST /product/put(or fetch)`
+    - URL `POST /warehouse/product/put(or fetch)`
 
     - Authority `SUPER` `PUT_PRODUCT` `FETCH_PRODUCT`
 
@@ -176,14 +175,14 @@
 
       ```json
       {
-          "p_id":"",
+          "p_id": "",
           "num":
       }
       ```
 
   - Accept Transfer
 
-    - URL `PUT /product/transefer/{transfer_id}?state=?`
+    - URL `PUT /warehouse/product/transefer/{transfer_id}?state=?`
 
     - Body
 
@@ -191,7 +190,6 @@
 
       ```
 
-      ​
 
 - Material
 
@@ -277,7 +275,6 @@
     }
     ```
 
-    ​
 
 ## OEM
 
@@ -287,7 +284,7 @@
 POST http://ip:port/oem/order
 
 User => Management
-RequestBody{materialId, materialName, materialNo}
+RequestBody {materialId, materialName, materialNo, oem}
 Response {code} "0" is ok, "1" is error
 ```
 
@@ -320,7 +317,7 @@ Response {[orderId, materialId, materialName, materialNo, amount, time, oem]}
 POST http://ip:port/components/order
 
 User => Management
-RequestBody{componentsId, componentsName, componentsNo}
+RequestBody {componentsId, componentsName, componentsNo}
 Response {code} "0" is ok, "1" is error
 ```
 
@@ -361,16 +358,20 @@ Response {num} num is balance
 #### 1. transfer
 
 URL
+
 ```
 http://localhost:3223/finance/transfer
 ```
+
 POST 
+
 ```
 User => Management
 RequestBody {"fromAccount":"1552730","toAccount":"1552732", "sum":110000}
 ```
 
 Response
+
 ```
 {
     "code": 200,
@@ -392,10 +393,13 @@ Response
   | Time        |      |                               |
 
 URL
+
 ```
 http://localhost:3224/finance/bill?start=2017-12-30
 ```
+
 HTTP Mode
+
 ```
 User => Management
 RequestBody {fromDate, toDate}
@@ -403,6 +407,7 @@ Response {bills} the list of bill from one stage to another stage
 ```
 
 Response
+
 ```
 {
     "code": 200,
@@ -427,14 +432,19 @@ Response
 
 #### 1.post order
 URL
+
 ```
 http://ip:port/express/deliver
 ```
+
 HTTP Mode
+
 ```
 POST
 ```
+
 RequstBody
+
 ```
 {
 	fromUser:
@@ -445,7 +455,9 @@ RequstBody
 	toUserPhone:
 }
 ```
+
 Response
+
 ```
 {
     "code": 200,
@@ -456,14 +468,19 @@ Response
 
 #### 2.view express
 URL
+
 ```
 http://10.0.1.52:8001/express/deliveries
 ```
+
 HTTP Mode
+
 ```
 GET
 ```
+
 Response
+
 ```
 {
     "code": 200,
@@ -494,8 +511,6 @@ Response
     ]
 }
 ```
-
-
 
 ### Express Adapter
 
