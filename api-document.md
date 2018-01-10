@@ -1,201 +1,309 @@
-### Warehouse
+# Warehouse
 
-#### Use Scenario
+####Use Scenario
 
-- **Put the raw material in the warehouse.**
+- Put the raw material in the warehouse.
 
 
-- **The factory  fetch raw material from  from the warehouse.**
+- The factory  fetch raw material from  from the warehouse.
 
 
 - The factory or foundry put the product in the warehouse.
 - The background management system check the inventory in warehouse.
 - The background management system fetch product from the warehouse.
 
-#### Put Product
+## ER Design
 
-URL
+- product_transfer
 
-```
-http://localhost:2224/warehouse/product/put
-```
+  | domain     | type | comment             |
+  | ---------- | ---- | ------------------- |
+  | id         |      |                     |
+  | number     |      |                     |
+  | time       |      |                     |
+  | product_id |      |                     |
+  | Type       |      | Put / fetch         |
+  | state      |      | processing/finished |
 
-HTTP Mode
+- product
 
-```
-POST {"id":1,"num":10}
-```
-Response
-```
-{
-    "code": 200,
-    "message": "success",
-    "content": "true"
-}
-```
+  | domain | type | comment |
+  | ------ | ---- | ------- |
+  | id     |      |         |
+  | name   |      |         |
+  | price  |      |         |
+  | Remain |      |         |
 
-Request Parameter
+- material
 
-| name |  type  |     Meaning     |
-| :--: | :----: | :-------------: |
-|  id  | string |   product id    |
-| num  |  int   | product  amount |
+  | domain | type | comment |
+  | ------ | ---- | ------- |
+  | id     |      |         |
+  | name   |      |         |
+  | number |      |         |
 
-#### Check Inventory
+- material_transfer
 
-URL
+  | domain      | type | comment            |
+  | ----------- | ---- | ------------------ |
+  | id          |      |                    |
+  | Remain      |      |                    |
+  | time        |      |                    |
+  | material_id |      |                    |
+  | Type        |      | Put / fetch        |
+  | state       |      | Processin/finished |
 
-```
-http://localhost:2224/warehouse/view?id=1
-```
+## API
 
-HTTP Mode
+- Product Information
+  - Check Product list
 
-```
-GET
-```
+    - URL `GET /warehouse/products  `
 
-Response
-```
-{
-    "code": 200,
-    "message": "success",
-    "content": {
-        "id": 1,
-        "name": "iphoneX",
-        "description": "the best mobile in the world",
-        "num": 50
-    }
-}
-```
-Request Parameter
+    - Authority `SUPER` `PRODUCT_MANAGEMENT`
 
-| name |  type  |  Meaning   |
-| :--: | :----: | :--------: |
-|  id  | string | product id |
+    - Response
 
-#### Fetch Product
+      ```json
+      {
+          "code": 200,
+          "message": "success",
+          "content": [
+              {
+                  "id": 1,
+                  "name": "iphone X",
+                  "description": "Our vision has always been to create an iPhone that is entirely screen. One so immersive the device itself disappears into the experience. And so intelligent it can respond to a tap, your voice, and even a glance. With iPhone X, that vision is now a reality. Say hello to the future.",
+                  "price": 8388,
+                  "num": 270
+              }
+          ]
+      }
+      ```
 
-URL
-```
-http://localhost:2224/warehouse/product/fetch
-```
+  - Create new product entry
 
-HTTP Mode
+    - URL  `POST /warehouse/product`
 
-```
-POST {"id":1,"num":10}
-```
+    - Authority `SUPER` `CREATE_PRODUCT`
 
-Response
-```
-{
-    "code": 200,
-    "message": "success",
-    "content": ""
-}
-```
-Request Parameter
+    - Body
 
-| name |  type  |    Meaning     |
-| :--: | :----: | :------------: |
-|  id  | string |   product id   |
-| num  |  int   | product amount |
+      ```json
+      {
+        "name":"Mac Pro", 
+        "description":"Mac has always been built around a singular vision: to create machines that are as powerful and functional as they are beautiful and intuitive. Mac Pro is a stunning realization of that ideal. All the elements that define a pro computer — graphics, storage, expansion, processing power, and memory — have been rethought and reengineered. So you have the power and performance to bring your biggest ideas to life.", 
+        "price":21888
+      }
+      ```
 
-### Factory
+  - Modify product info
+
+    - URL `PUT /warehouse/product/{product_id}`
+
+    - Body
+
+      ```json
+      {
+        "name":"Mac Pro", 
+        "description":"Mac has always been built around a singular vision: to create machines that are as powerful and functional as they are beautiful and intuitive. Mac Pro is a stunning realization of that ideal. All the elements that define a pro computer — graphics, storage, expansion, processing power, and memory — have been rethought and reengineered. So you have the power and performance to bring your biggest ideas to life.", 
+        "price":20888
+      }
+      ```
+
+- Product Transfer
+
+  - View transfer history
+
+    - URL `GET /warehouse/product/transfer?start=date&end=date&state=()`
+
+    - Body
+
+      ```json
+      {
+          "code": 200,
+          "message": "success",
+          "content": [
+              {
+                  "id": 2,
+                  "num": 10,
+                  "name": "iphone X",
+                  "p_id": 1,
+                  "type": 0,
+                  "state": 1,
+                  "time": 1515520763000
+              },
+              {
+                  "id": 3,
+                  "num": 10,
+                  "name": "iphone X",
+                  "p_id": 1,
+                  "type": 0,
+                  "state": 1,
+                  "time": 1515521834000
+              },
+              {
+                  "id": 4,
+                  "num": 100,
+                  "name": "iMac pro",
+                  "p_id": 2,
+                  "type": 0,
+                  "state": 1,
+                  "time": 1515524462000
+              },
+              {
+                  "id": 5,
+                  "num": 100,
+                  "name": "iMac pro",
+                  "p_id": 2,
+                  "type": 0,
+                  "state": 1,
+                  "time": 1515524465000
+              }
+          ]
+      }
+      ```
+
+      ​
+
+
+  - Put/Fetch product request
+
+    - URL `POST /warehouse/product/put(or fetch)`
+
+    - Authority `SUPER` `PUT_PRODUCT` `FETCH_PRODUCT`
+
+    - Body
+
+      ```json
+      {
+          "p_id":"",
+          "num":
+      }
+      ```
+
+  - Accept Transfer
+
+    - URL `PUT /warehouse/product/transefer/{transfer_id}?state=?`
+
+    - Body
+
+      ```json
+
+      ```
+
+      ​
+
+- Material
+
+  - URL  `POST /material`
+  - The same as product
+
+
+## Factory
 
 #### Use Scenario
 
 - The backstage management system place order to factory
+- Confirm order
 - The backstage management system check task information
 
-#### Place Order
+### ER
 
-URL
+| Domain     |      |      |
+| ---------- | ---- | ---- |
+| Id         |      |      |
+| Product_id |      |      |
+| number     |      |      |
+| state      |      |      |
+| time       |      |      |
 
-```
-http://localhost:4224/factory/place
-```
+### API
 
-HTTP Mode
+- Place Order
 
-```
-POST {"id":1,"num":10}
-```
-Response
-```
-{
-    "code": 200,
-    "message": "success",
-    "content": "1"
-}
-```
+  - URL: `POST /factory/order`
 
-Request Parameter
+  - Body
 
-| name |  type  |   Meaning   |
-| :--: | :----: | :---------: |
-|  id  | string |   task id   |
-| num  |  int   | task amount |
-
-#### Check Task
-
-URL
-
-```
-http://localhost:4224/factory/check?id=1
-```
-
-HTTP Mode
-
-```
-GET
-```
-Response
-```
-{
-    "code": 200,
-    "message": "success",
-    "content": {
-        "id": 1,
-        "progress": 10,
-        "p_id": 1,
-        "num": 50
+    ```json
+    {
+      id,
+      num,
     }
-}
-```
-Request Parameter
+    ```
 
-| name |  type  | Meaning |
-| :--: | :----: | :-----: |
-|  id  | string | task id |
+- Update order
 
+  - URL: `PUT /factory/order`
 
+  - Body
 
+    ```json
+    {
+      "id":1,
+      "p_id":1,
+      "num":500,
+      "state":1,
+      "time":1515497018000
+    }
+    ```
 
+- View order
 
-### OEM
+  - URL: `GET/facotry/orders`
+
+  - Body
+
+    ```json
+    {
+        "code": 200,
+        "message": "success",
+        "content": [
+            {
+                "id": 1,
+                "state": 0,
+                "p_id": 1,
+                "num": 50,
+                "time": 1515497015000
+            },
+            {
+                "id": 2,
+                "state": 0,
+                "p_id": 1,
+                "num": 50,
+                "time": 1515497018000
+            }
+        ]
+    }
+    ```
+
+    ​
+
+## OEM
 
 #### 1. post order
 
 ```
-POST http://10.0.1.2:8000/oem/order
+POST http://ip:port/oem/order
 
 User => Management
-RequestBody {materialId, materialName, materialNo}
-Response {orderId}
+RequestBody{materialId, materialName, materialNo}
+Response {code} "0" is ok, "1" is error
 ```
 
-#### 2.get order
+### OEM Adapter
 
-```
-GET http://10.0.1.2:8000/oem/get/{orderId}
+- ER
 
-User => Management
-Response {orderId, materialId, materialName, materialNo, amount, time}
-```
+  | domain     |      |      |
+  | ---------- | ---- | ---- |
+  | Order_id   |      |      |
+  | Product_id |      |      |
+  | number     |      |      |
+  | Amount     |      |      |
+  | Time       |      |      |
 
-### Components
+## Components
 
 #### 1. post order
 
@@ -203,57 +311,21 @@ Response {orderId, materialId, materialName, materialNo, amount, time}
 POST http://ip:port/components/order
 
 User => Management
-RequestBody {componentsId, componentsName, componentsNo}
+RequestBody{componentsId, componentsName, componentsNo}
 Response {code} "0" is ok, "1" is error
 ```
 
-### Authentication
+## Components Adpter
 
-#### 1. login
+- ER
 
-```
-POST http://ip:port/authentication
-
-User => User
-RequestBody {username, password}
-Response {cookie, userInfo}
-```
-
-### External
-
-#### 1. get info
-
-```
-GET http://ip:port/item/info/{id}
-
-User => Management
-RequestBody {itemId}
-Response {itemInfo}
-```
-
-#### 2. post order
-
-```
-POST http://ip:port/item/order
-
-User => Management
-RequestBody {orderId, orderItems}
-Response {code} "0" is ok, "1" is error
-```
-
-#### 3. check inventory
-
-```
-GET http://ip:port/item/inventory/{id}
-
-User => Management
-RequestBody {itemId}
-Response {itemNo}
-```
-
-
-
-
+  | domain       |      |      |
+  | ------------ | ---- | ---- |
+  | Order_id     |      |      |
+  | component_id |      |      |
+  | number       |      |      |
+  | Amount       |      |      |
+  | Time         |      |      |
 
 ### Bank
 
@@ -300,9 +372,19 @@ Response
 
 #### 2. view bill
 
+- ER
+
+  | domain      |      |                               |
+  | ----------- | ---- | ----------------------------- |
+  | Id          |      |                               |
+  | Type        |      | Customer/oem/commpent/experss |
+  | relation_id |      |                               |
+  | Amount      |      |                               |
+  | Time        |      |                               |
+
 URL
 ```
-http://localhost:3224/finance/bill?start=2017-12-30 15:54:25&end=2017-12-31 17:54:25
+http://localhost:3224/finance/bill?start=2017-12-30
 ```
 HTTP Mode
 ```
@@ -366,7 +448,7 @@ Response
 #### 2.view express
 URL
 ```
-http://ip:port/express/deliveries
+http://10.0.1.52:8001/express/deliveries
 ```
 HTTP Mode
 ```
@@ -377,6 +459,40 @@ Response
 {
     "code": 200,
     "message": "success",
-    "content": []
+    "content": [
+        {
+            "id": 0,
+            "fromUser": "Phoenix",
+            "fromUserPhone": "18000000001",
+            "toUser": "Hadoop",
+            "toUserPhone": "18000000001",
+            "source": "Tongji University",
+            "destination": "Tongji University, Caoan HighWay",
+            "time": 1515569827000,
+            "state": 0
+        },
+        {
+            "id": 0,
+            "fromUser": "Phoenix",
+            "fromUserPhone": "18000000001",
+            "toUser": "Hadoop",
+            "toUserPhone": "18000000001",
+            "source": "Tongji University",
+            "destination": "Tongji University, Caoan HighWay",
+            "time": 1515569796000,
+            "state": 0
+        }
+    ]
 }
 ```
+
+
+
+### Express Adapter
+
+| domain      |      |      |
+| ----------- | ---- | ---- |
+| Id          |      |      |
+| Order_id    |      |      |
+| state       |      |      |
+| Create_time |      |      |
