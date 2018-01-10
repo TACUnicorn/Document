@@ -1,6 +1,6 @@
 ### Warehouse
 
-####Use Scenario
+#### Use Scenario
 
 - **Put the raw material in the warehouse.**
 
@@ -12,7 +12,7 @@
 - The background management system check the inventory in warehouse.
 - The background management system fetch product from the warehouse.
 
-####Put Product
+#### Put Product
 
 URL
 
@@ -109,7 +109,7 @@ Request Parameter
 - The backstage management system place order to factory
 - The backstage management system check task information
 
-####Place Order
+#### Place Order
 
 URL
 
