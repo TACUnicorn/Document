@@ -182,18 +182,17 @@ Request Parameter
 POST http://10.0.1.2:8000/oem/order
 
 User => Management
-RequestBody{materialId, materialName, materialNo}
+RequestBody {materialId, materialName, materialNo}
 Response {orderId}
 ```
 
 #### 2.get order
 
 ```
-GET http://10.0.1.2:8000/oem
+GET http://10.0.1.2:8000/oem/get/{orderId}
 
 User => Management
-RequestBody{orderId}
-Response {code} "0" is ok, "1" is error
+Response {orderId, materialId, materialName, materialNo, amount, time}
 ```
 
 ### Components
@@ -204,7 +203,7 @@ Response {code} "0" is ok, "1" is error
 POST http://ip:port/components/order
 
 User => Management
-RequestBody{componentsId, componentsName, componentsNo}
+RequestBody {componentsId, componentsName, componentsNo}
 Response {code} "0" is ok, "1" is error
 ```
 
@@ -216,7 +215,7 @@ Response {code} "0" is ok, "1" is error
 POST http://ip:port/authentication
 
 User => User
-RequestBody{username, password}
+RequestBody {username, password}
 Response {cookie, userInfo}
 ```
 
@@ -228,8 +227,8 @@ Response {cookie, userInfo}
 GET http://ip:port/item/info/{id}
 
 User => Management
-RequestBody{itemId}
-Response{itemInfo}
+RequestBody {itemId}
+Response {itemInfo}
 ```
 
 #### 2. post order
@@ -238,7 +237,7 @@ Response{itemInfo}
 POST http://ip:port/item/order
 
 User => Management
-RequestBody{orderId, orderItems}
+RequestBody {orderId, orderItems}
 Response {code} "0" is ok, "1" is error
 ```
 
@@ -248,8 +247,8 @@ Response {code} "0" is ok, "1" is error
 GET http://ip:port/item/inventory/{id}
 
 User => Management
-RequestBody{itemId}
-Response{itemNo}
+RequestBody {itemId}
+Response {itemNo}
 ```
 
 
