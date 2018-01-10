@@ -114,7 +114,7 @@
 
   - View transfer history
 
-    - URL `GET /warehouse/product/transfer?start=date&end=date&state=()`
+    - URL `GET /warehouse/product/transfers?start=date&end=date&state=()`
 
     - Body
 
