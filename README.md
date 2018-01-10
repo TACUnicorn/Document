@@ -108,6 +108,8 @@ under ``TAC Public``, my IP Address is ``10.0.1.2``.
 | factory(LI)     | 3308  |
 | warehouse(CUN)  | 3307  |
 | finance(CUN)    | 3306  |
+| delivery        | 3305  |
+| oem-adapter-db  | 3300  |
 
 ### Back-End
 
@@ -120,6 +122,7 @@ under ``TAC Public``, my IP Address is ``10.0.1.2``.
 | factory(XML)  | 8084  |
 | bank          | 8085  |
 | components    | 8086  |
+| oem-adapter   | 8000  |
 
 ### Service Summary
 
