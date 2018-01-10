@@ -17,7 +17,7 @@
 URL
 
 ```
-http://localhost:2224/warehouse/put
+http://localhost:2224/warehouse/product/put
 ```
 
 HTTP Mode
@@ -78,7 +78,7 @@ Request Parameter
 
 URL
 ```
-http://localhost:2224/warehouse/fetch
+http://localhost:2224/warehouse/product/fetch
 ```
 
 HTTP Mode
