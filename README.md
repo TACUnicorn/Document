@@ -1,5 +1,7 @@
 # TAC Inc.
 
+Repo: https://github.com/TACUnicorn
+
 TAC Inc. is a multinational technology company that develops and sells consumer electronics via different ways such as hte direct retail store, online store and third-party store. We also integrate the entire industrial chain vertically.
 
 This project aims to provide a microservice system facing business based on Spring Cloud and Spring Boot.
@@ -73,13 +75,13 @@ There is also a Circuit Breaker. It supports fault tolerance with a monitoring d
 
 ### OAuth SSO
 
-![](res/sso.png)
+OAuth 2 is an authorization framework that enables applications to obtain limited access to user accounts on an HTTP service, such as Facebook, GitHub, and DigitalOcean. It works by delegating user authentication to the service that hosts the user account, and authorizing third-party applications to access the user account. OAuth 2 provides authorization flows for web and desktop applications, and mobile devices.
 
-OAuth SSO(Single Sign On System)
+![](res/sso.png)
 
 ## Dilemma
 
-In the project, we have met many dilemmas, including limited time, all-new framework and service. Thus, lots of micro-service and its deployment also put us in trouble. However, we all overcome them, 
+In the project, we have met many dilemmas, including limited time, all-new framework and service. Thus, lots of micro-service and its deployment also put us in trouble. However, we all overcome them.
 
 ## Project Schedule
 
@@ -94,22 +96,20 @@ In the project, we have met many dilemmas, including limited time, all-new frame
 
 ### Docker
 
-under ``TAC Public``, my IP Address is ``10.0.1.2``.
-
 #### MySQL
 
-| NAMES           | PORTS |
-| --------------- | ----- |
-| orders          | 3313  |
-| management(CUN) | 3312  |
-| bank(JIN)       | 3311  |
-| components(JIN) | 3310  |
-| oem(LI)         | 3309  |
-| factory(LI)     | 3308  |
-| warehouse(CUN)  | 3307  |
-| finance(CUN)    | 3306  |
-| delivery        | 3305  |
-| oem-adapter-db  | 3300  |
+| NAMES          | PORTS |
+| -------------- | ----- |
+| orders         | 3313  |
+| management     | 3312  |
+| bank           | 3311  |
+| components     | 3310  |
+| oem            | 3309  |
+| factory        | 3308  |
+| warehouse      | 3307  |
+| finance        | 3306  |
+| delivery       | 3305  |
+| oem-adapter-db | 3300  |
 
 ### Back-End
 
