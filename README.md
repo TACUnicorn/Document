@@ -1,22 +1,44 @@
-# TAC Inc.
+# TACUnicorn
 
-Repo: https://github.com/TACUnicorn
+![Java](https://img.shields.io/badge/Java-8-green.svg) ![Maven](https://img.shields.io/badge/Maven-4.0.0-orange.svg)
 
-TAC Inc. is a multinational technology company that develops and sells consumer electronics via different ways such as hte direct retail store, online store and third-party store. We also integrate the entire industrial chain vertically.
+TACUnicorn is a project under TAC Inc, which aims to provide a microservice system facing business based on Spring Cloud and Spring Boot.
 
-This project aims to provide a microservice system facing business based on Spring Cloud and Spring Boot.
+## Requirement
+
+- Java
+- Docker
+- MySQL
+- ​
+
+## Technology Stack
+
+- Spring Boot
+- Spring Cloud Config
+- Eureka
+- Zuul
+- Ribbon
+- RabbitMQ
+- Spring Cloud OAuth2
+- Docker
+- Angular
+- Vue
 
 ## Functionalities
 
-#### Authentication Service
+### Scenario
+
+As a integral company project, we focus on both costumer based and enterprise based aspects. Firstly, we develop an online store website to sell our product. Thus, we also provide a internal website to manage in background. By using service-oriented architecture(SOA), we develop many services inside and outside.
+
+### Authentication Service
 
 Contains general employee login and sign up function. Thus, only be certified, can you access ``Management Service``, ``Finance Service``, ``Warehouse`` and ``Factory``.
 
-#### Finance Service
+### Finance Service
 
 It will call the ``Bank Adapter`` which packages some financial services, such as charge in the bank account and deposit. As a result, it will call third-party APIs from ``Bank``.
 
-#### Warehouse
+### Warehouse
 
 We have several warehouses all over the world. So we build a commodity dispatch system as well as a commodity management system. It provides following services:
 
@@ -25,7 +47,7 @@ We have several warehouses all over the world. So we build a commodity dispatch 
 3. Call ``OEM``(Original Equipment Manufacturer) APIs to manufacture some goods
 4. Call ``Factory`` APIs to manufacture some goods
 
-#### Factory
+### Factory
 
 Our self-employed factory can produce some goods which we have the core technology. It will call third-party ``Components`` APIs to purchase some materials. Thus, it can also call ``Delivery`` APIs to transport goods.
 
@@ -37,19 +59,21 @@ This is a service we exposed to third-party sellers like JD, Tmall and Amazon. I
 
 We also have an official website, it has all our products and user can place a rerail order online. It will call ``Delivery`` to transport and call the ``Finance Service`` to cut payment.
 
-#### Retail Store
-
-As the Website on the Internet, Retail Store is a chain of stores sells our product in some metropolises. It will call the ``Finance Service`` to complete the payment.
-
 #### Business Intelligence Service
 
 This is a service which comprises the strategies and technologies used by enterprises for the data analysis of business information. Besides analyzing data on our part, it can also provide external service.
 
-## Logical Architecture
+## Architecture
+
+### Project Architecture
+
+As you can see in [GitHub](https://github.com/TACUnicorn), 
+
+### Logical Architecture
 
 ![logical_architecture](res/architecture.png)
 
-## Development Architecture
+### Development Architecture
 
 ![development_architecture](res/architecture2.png)
 
@@ -73,17 +97,24 @@ For conveniently configuring, we use a Dynamic, centralized configuration manage
 
 There is also a Circuit Breaker. It supports fault tolerance with a monitoring dashboard.
 
+## Project Detail
+
 ### OAuth SSO
 
 OAuth 2 is an authorization framework that enables applications to obtain limited access to user accounts on an HTTP service, such as Facebook, GitHub, and DigitalOcean. It works by delegating user authentication to the service that hosts the user account, and authorizing third-party applications to access the user account. OAuth 2 provides authorization flows for web and desktop applications, and mobile devices.
 
-![](res/sso.png)
+![sso](res/sso.png)
 
-## Dilemma
+### Adapter
 
-In the project, we have met many dilemmas, including limited time, all-new framework and service. Thus, lots of micro-service and its deployment also put us in trouble. However, we all overcome them.
 
-## Project Schedule
+
+## Document
+
+- API Document
+- Code Style: [Alibaba Java Coding Guidelines](https://alibaba.github.io/Alibaba-Java-Coding-Guidelines/)
+
+## Schedule
 
 | Time Point   | Schedule                                 |
 | ------------ | :--------------------------------------- |
@@ -92,42 +123,23 @@ In the project, we have met many dilemmas, including limited time, all-new frame
 | Jan 2, 2018  | Java EE: Presentation and Demonstration  |
 | Jan 11, 2018 | Web & SOA: Final Delivery & Presentation and Demonstration |
 
-## Project Detail
+## Demo
 
-### Docker
+[YouTube](https://youtu.be/_dbgT-g96uU)
 
-#### MySQL
+## About us
 
-| NAMES          | PORTS |
-| -------------- | ----- |
-| orders         | 3313  |
-| management     | 3312  |
-| bank           | 3311  |
-| components     | 3310  |
-| oem            | 3309  |
-| factory        | 3308  |
-| warehouse      | 3307  |
-| finance        | 3306  |
-| delivery       | 3305  |
-| oem-adapter-db | 3300  |
+TAC Inc. is a multinational technology company that develops and sells consumer electronics via different ways such as direct retail store, online store and third-party store. We also intergrate the entire industrial chain vertically.
 
-### Back-End
+**Board Of Directors**(Contributers)
 
-| NAMES             | PORTS |
-| ----------------- | ----- |
-| intergration      | 8079  |
-| oem(JSON)         | 8081  |
-| oem(XML)          | 8082  |
-| factory(JSON)     | 8083  |
-| factory(XML)      | 8084  |
-| bank              | 8085  |
-| components        | 8086  |
-| oem-adapter       | 8000  |
-| delivery(express) | 8001  |
+- 1452669 [Yang LI](https://github.com/zjzsliyang)
+- 1453645 [Zhongjin LUO](https://github.com/tjluozhongjin)
+- 1552730 [Xuantang CUN](https://github.com/wzes)
+- 1552771 [Han LI](https://github.com/lisirrx)
 
-## Members
+## License
 
-- 1452669 Yang LI
-- 1453645 Zhongjin LUO
-- 1552730 Xuantang CUN
-- 1552771 Han LI
+[MIT](https://github.com/TACUnicorn/Document/blob/master/LICENSE) License
+
+Copyright (c) 2018 TAC Inc.
