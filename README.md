@@ -6,23 +6,33 @@ TACUnicorn is a project under TAC Inc, which aims to provide a microservice syst
 
 ## Requirement
 
-- Java
-- Docker
-- MySQL
-- ​
+- Java: 8
+- Docker Engine: 17.12.0
+- Docker Machine: 0.13.0
+- MySQL: 14.14
+- Spring Boot: 1.5.9
+- Spring Cloud: Edgware
+- Mybatis: 1.3.1
+- Zuul: 1.2.3
+- Ribbon: 2.2.4
+- Eureka: 1.8.6
+- RabbitMQ: 3.7.2
+- Angular: 5.2.0
+- Vue: 2.5.13
 
 ## Technology Stack
 
-- Spring Boot
-- Spring Cloud Config
-- Eureka
-- Zuul
-- Ribbon
-- RabbitMQ
-- Spring Cloud OAuth2
-- Docker
-- Angular
-- Vue
+- Spring Boot: A framework to build a REST-based microservice, simplify the initial setup and development of Spring applications
+- Spring Cloud Config: Centralized configuration server for the MSA solution
+- Eureka:  Act as Service registry & discovery component
+- Zuul: Edge Server, Reverse proxy server. API gateway or gate keeper for external parties
+- Ribbon: Load balancer
+- RabbitMQ: Messaging protocols for asynchronous communication
+- Redis: Distributed caching mechanisms
+- Spring Cloud OAuth2: Security mechanisms which can be integrated with microservices
+- Docker: Deployment architectures for our microservices
+- Angular: Front-End framework for our outside website(online store)
+- Vue: Front-End framework for our inside website(background management system)
 
 ## Functionalities
 
