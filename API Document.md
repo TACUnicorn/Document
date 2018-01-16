@@ -1,6 +1,37 @@
 # API Document
 
-[TOC]
+## Deployment
+
+### Docker
+
+#### MySQL
+
+| NAMES          | PORTS |
+| -------------- | ----- |
+| orders         | 3313  |
+| management     | 3312  |
+| bank           | 3311  |
+| components     | 3310  |
+| oem            | 3309  |
+| factory        | 3308  |
+| warehouse      | 3307  |
+| finance        | 3306  |
+| delivery       | 3305  |
+| oem-adapter-db | 3300  |
+
+### Back-End
+
+| NAMES             | PORTS |
+| ----------------- | ----- |
+| intergration      | 8079  |
+| oem(JSON)         | 8081  |
+| oem(XML)          | 8082  |
+| factory(JSON)     | 8083  |
+| factory(XML)      | 8084  |
+| bank              | 8085  |
+| components        | 8086  |
+| oem-adapter       | 8000  |
+| delivery(express) | 8001  |
 
 ## Warehouse
 
@@ -533,36 +564,3 @@ Response
 | order_id    | INT      |
 | state       | INT      |
 | create_time | Datetime |
-
-## Deployment
-
-### Docker
-
-#### MySQL
-
-| NAMES          | PORTS |
-| -------------- | ----- |
-| orders         | 3313  |
-| management     | 3312  |
-| bank           | 3311  |
-| components     | 3310  |
-| oem            | 3309  |
-| factory        | 3308  |
-| warehouse      | 3307  |
-| finance        | 3306  |
-| delivery       | 3305  |
-| oem-adapter-db | 3300  |
-
-### Back-End
-
-| NAMES             | PORTS |
-| ----------------- | ----- |
-| intergration      | 8079  |
-| oem(JSON)         | 8081  |
-| oem(XML)          | 8082  |
-| factory(JSON)     | 8083  |
-| factory(XML)      | 8084  |
-| bank              | 8085  |
-| components        | 8086  |
-| oem-adapter       | 8000  |
-| delivery(express) | 8001  |
