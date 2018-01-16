@@ -1,6 +1,6 @@
 # TACUnicorn
 
-![Java](https://img.shields.io/badge/Java-8-green.svg) ![Maven](https://img.shields.io/badge/Maven-4.0.0-orange.svg)
+![Java](https://img.shields.io/badge/Java-8-green.svg) ![Maven](https://img.shields.io/badge/Maven-4.0.0-orange.svg) ![licence](https://img.shields.io/badge/license-MIT-blue.svg)
 
 TACUnicorn is a project under TAC Inc, which aims to provide a microservice system facing business based on Spring Cloud and Spring Boot.
 
@@ -124,8 +124,6 @@ OAuth 2 is an authorization framework that enables applications to obtain limite
 
 ![sso](res/sso.png)
 
-
-
 ### Adapter
 
 In service-oriented architecture, we have many external services. Actually, we have [OEM(JSON)](https://github.com/TACUnicorn/External-Services/tree/master/oem) and [OEM(XML)](https://github.com/TACUnicorn/External-Services/tree/master/oem2) services for example. To schedual and call the API, we need adapters for each services which encapsulate the API from external and provide a uniform data structure for communication.
@@ -218,23 +216,93 @@ Async, by contrast, is callback based and driven by an event loop. The event loo
 
 ### Eureka
 
+Eureka is a REST (Representational State Transfer) based service that is primarily used in the AWS cloud for locating services for the purpose of load balancing and failover of middle-tier servers.
 
+Following figure below shows the primary components in a typical Eureka 2.0 deployment. Eureka system itself consists of a write and read cluster. The write cluster is a stateful subsystem, which handles client registrations and maintains internal service registry. The registry content is replicated between the all write server nodes in an eventually consistent manner. The write cluster's registry content is read by the read cluster, that ultimately is used by the Eureka clients. As the read cluster is effectively a cache layer, it can be easily, and rapidly scaled up and down depending on the volume of the traffic. The write cluster should be pre-scaled with a capacity enough to handle the peek/busy hour traffic. Although it can be scaled up and down dynamically, it needs to be done with more coordination. Scaling up will require traffic re-balancing, which will eventually happen, but not immediately. Scaling down will force the clients from the shutdown node(s) to re-register.
+
+![](res/eureka1.png)
+
+#### Client Registration
+
+Eureka clients can register themselves to be discoverable via registration, heartbeats and updates. Registrations include discoverable identifiers and service status, as well as optional freeform metadata. Eureka 2.0 servers responsible for handling these actions form the write cluster.
+
+![](res/eureka2.png)
+
+A single client can register multiple service instances. Each registration is handled over a separate connection to the write server, as the connection status itself denotes the service liveness. Software heartbeats at the Eureka level is used to determine connection liveness as network stacks in virtualized environments are not 100% trustworthy. If a connection is lost, the registration entry in the write cluster registry is put into the eviction queue, and ultimately remove from the registry. Well behaving clients should always send unregister request prior to disconnecting. This will result in immediate removal of the service from the registry. After the registration, the client can send any number of update requests, changing its instance data. One usage example would be modification of the service status (up/down).
+
+#### Registry Discovery
+
+Eureka clients can subscribe to interest sets on Eureka servers. After a successful subscription, all changes to subscribed interests are pushed by the server to the client. Eureka servers responsible for handling these actions form the read cluster.
+
+![](res/eureka3.png)
 
 ### Ribbon
 
+Ribbon is a Inter Process Communication (remote procedure calls) library with built in software load balancers. The primary usage model involves REST calls with various serialization scheme support.
 
+Ribbon, as a first cut, mainly offers the client side software load balancing algorithms which have been battle tested at Netflix along with a few of the other components that form our Inter Process Communication stack (aka NIWS). We plan to continue open sourcing the rest the of the NIWS stack in the coming months. Please note that the loadbalancers mentioned are the internal client-side loadbalancers used alongside Eureka that are primarily used for load balancing requests to our mid-tier services. For our public facing Edge Services we continue to use [Amazon’s ELB Service](http://aws.amazon.com/elasticloadbalancing/).
 
 ### RabbitMQ
 
+RabbitMQ is lightweight and easy to deploy on premises and in the cloud. It supports multiple messaging protocols. RabbitMQ can be deployed in distributed and federated configurations to meet high-scale, high-availability requirements.
 
+A message broker can act as a middleman for various services. They can be used to reduce loads and delivery times by web application servers since tasks, which would normally take quite a bit of time to process, can be delegated to a third party whose only job is to perform them.
+
+In this guide, we follow a scenario where a web application allows users to upload information to a website. The site will handle this information and generate a PDF and email it back to the user. Handling the information, generating the PDF and sending the email will in this example case take several seconds and that is one of the reasons of why a message queue will be used.
+
+When the user has entered user information into the web interface, the web application will put a "PDF processing" - task and all information into a message and the message will be placed onto a queue defined in RabbitMQ.
+
+![](res/rabbitmq1.png)
+
+The basic architecture of a message queue is simple, there are client applications called producers that create messages and deliver them to the broker (the message queue). Other applications, called consumers, connects to the queue and subscribes to the messages to be processed. A software can be a producer, or consumer, or both a consumer and a producer of messages. Messages placed onto the queue are stored until the consumer retrieves them.
+
+Message queueing allows web servers to respond to requests quickly instead of being forced to perform resource-heavy procedures on the spot. Message queueing is also good when you want to distribute a message to multiple recipients for consumption or for balancing loads between workers.
+
+Messages are not published directly to a queue, instead, the producer sends messages to an exchange. An exchange is responsible for the routing of the messages to the different queues. An exchange accepts messages from the producer application and routes them to message queues with the help of bindings and routing keys. A binding is a link between a queue and an exchange.
+
+![](res/rabbitmq2.png)
+
+The figure above shows Message Flow in RabbitMQ:
+
+1. The producer publishes a message to an exchange. When you create the exchange, you have to specify the type of it. The different types of exchanges are explained in detail later on.
+2. The exchange receives the message and is now responsible for the routing of the message. The exchange takes different message attributes into account, such as routing key, depending on the exchange type.
+3. Bindings have to be created from the exchange to queues. In this case, we see two bindings to two different queues from the exchange. The Exchange routes the message into the queues depending on message attributes.
+4. The messages stay in the queue until they are handled by a consumer.
+5. The consumer handles the message.
 
 ### Docker
 
+Docker is the company driving the container movement and the only container platform provider to address every application across the hybrid cloud. Today’s businesses are under pressure to digitally transform but are constrained by existing applications and infrastructure while rationalizing an increasingly diverse portfolio of clouds, datacenters and application architectures. Docker enables true independence between applications and infrastructure and developers and IT ops to unlock their potential and creates a model for better collaboration and innovation.
 
+Containerization, as an alternative to virtualization, has always had the potential to change the way we build apps. Docker, as a containerization tool, is often compared to virtual machines.
+
+Virtual machines (VMs) were introduced to optimize the use of computing resources. You can run several VMs on a single server and deploy each application instance on a separate virtual machine. With this model, each VM provides a stable environment for a single application instance. Unfortunately, however, when we scale our application we’ll quickly encounter issues with performance, as VMs still consume a lot of resources.
+
+![](res/docker1.jpg)
+
+The diagram above shows that hypervisor is used to run several operating systems on the same server. In the simplest terms, hypervisor helps reduce the resources required to run several operating systems.
+
+Because microservices are similar to small apps, we must deploy microservices to their own VM instances to ensure discrete environments. And as you can imagine, dedicating an entire virtual machine to deploying only a small part of an app isn’t the most efficient option. With Docker, however, it’s possible to reduce performance overhead and deploy thousands of microservices on the same server since Docker containers require a lot fewer computing resources than virtual machines.
+
+So far we’ve been talking about managing environments for a single app. But let’s assume you’re developing two different projects or you need to test two different versions of the same app. Conflicts between app versions or libraries (for projects) are inevitable in this case, and supporting two different environments on the same VM is a real pain.
+
+Contrary to how VMs work, with Docker we don’t need to constantly set up clean environments in the hopes of avoiding conflicts. With Docker, we know that there will be no conflicts. Docker guarantees that application microservices will run in their own environments that are completely separate from the operating system.
+
+Thanks to Docker, there’s no need for each developer in a team to carefully follow 20 pages of operating system-specific instructions. Instead, one developer can create a stable environment with all the necessary libraries and languages and simply save this setup in the Docker Hub (we’ll talk more about the Hub later). Other developers then only need to load the setup to have the exact same environment. As you can imagine, Docker can save us a lot of time.
+
+If you Google you’ll likely find other benefits of using Docker, such as rapid development speed and freedom of choice in terms of technology stacks. But we’d say that these other benefits that people talk about have nothing to do with Docker itself. It’s actually the microservices-based architecture that lets you rapidly develop new features and choose any technology stack you like for each microservice.
+
+Here is the Docker's advantages:
+
+- Faster start time. A Docker container starts in a matter of seconds because a container is just an operating system process. A virtual machine with a complete OS can take minutes to load.
+- Faster deployment. There’s no need to set up a new environment; with Docker, web development team members only need to download a Docker image to run it on a different server.
+- Easier management and scaling of containers, as you can destroy and run containers faster than you can destroy and run virtual machines.
+- Better usage of computing resources as you can run more containers than virtual machines on a single server.
+- Support for various operating systems: you can get Docker for Windows, Mac, Debian, and other OSs.
 
 ## Document
 
-- API Document
+- [API Document](https://github.com/TACUnicorn/Document/blob/master/API%20Document.md)
 - Code Style: [Alibaba Java Coding Guidelines](https://alibaba.github.io/Alibaba-Java-Coding-Guidelines/)
 
 ## Schedule
