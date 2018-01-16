@@ -77,7 +77,16 @@ This is a service which comprises the strategies and technologies used by enterp
 
 ### Project Architecture
 
-As you can see in [GitHub](https://github.com/TACUnicorn), 
+As you can see in [GitHub](https://github.com/TACUnicorn), we devide our work into following parts:
+
+- [Document](https://github.com/TACUnicorn/Document): We put our all documents here for better integration and communication, such as API Document and README.
+- [Management-Frontend](https://github.com/TACUnicorn/Management-Frontend): Internal background management system website.
+- [OnlineStore-Frontend](https://github.com/TACUnicorn/OnlineStore-Frontend): External online sell store website.
+- [AuthServer](https://github.com/TACUnicorn/AuthServer): Spring Cloud OAuth2 services.
+- [Internal-Services](https://github.com/TACUnicorn/Internal-Services): All internal services.
+- [External-Services](https://github.com/TACUnicorn/External-Services): All external services.
+- [Adapters](https://github.com/TACUnicorn/Adapters): External services' adapters.
+- [SpringCloudConfig](https://github.com/TACUnicorn/SpringCloudConfig): Centralized configuration server.
 
 ### Logical Architecture
 
@@ -115,7 +124,111 @@ OAuth 2 is an authorization framework that enables applications to obtain limite
 
 ![sso](res/sso.png)
 
+
+
 ### Adapter
+
+In service-oriented architecture, we have many external services. Actually, we have [OEM(JSON)](https://github.com/TACUnicorn/External-Services/tree/master/oem) and [OEM(XML)](https://github.com/TACUnicorn/External-Services/tree/master/oem2) services for example. To schedual and call the API, we need adapters for each services which encapsulate the API from external and provide a uniform data structure for communication.
+
+```java
+@Service
+public class OrderService {
+    @Autowired
+    private OrderMapper orderMapper;
+    public ArrayList<Order> getOrders() {
+        return orderMapper.getOrders();
+    }
+
+    public void postOrder(final int materialId, final String materialName, final int materialNo, final String oem) {
+        String fromAccount = "TAC Inc";
+        String toAccount = oem;
+
+        Order order = new Order();
+        order.setMaterialId(materialId);
+        order.setMaterialName(materialName);
+        order.setMaterialNo(materialNo);
+        order.setOem(oem);
+
+        if (oem.equals("Foxconn Technology Group")) {
+            order.setAmount(contactOem(materialId, materialNo, 8081));
+        } else {
+            order.setAmount(contactOem(materialId, materialNo, 8082));
+        }
+
+        if (transfer(fromAccount, toAccount, order.getAmount())) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Thread.sleep(10000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    putWarehouse(materialId, materialNo);
+                }
+            }).start();
+        }
+        orderMapper.add(order);
+    }
+
+    public int contactOem(int materialId, int materialNo, int oemPorts) {...}
+
+    public void putWarehouse(int materialId, int materialNo) {...}
+
+    public boolean transfer(String fromAccount, String toAccount, int amount) {...}
+
+}
+```
+
+Take our OEM Adapter for in detail, from the ``POST`` request it will call different ``OEM``API, which communicate with different format data and RPC. In return, it should handle JSON and XML data separately.
+
+### Zuul
+
+Like we use tyk in Go before, Zuul is a JVM based router and server side load balancer by Netflix.
+
+It provides a single entry to our system, which allows a browser, mobile app, or other user interface to consume services from multiple hosts without managing cross-origin resource sharing (CORS) and authentication for each one. We can integrate Zuul with other Netflix projects like Hystrix for fault tolerance and Eureka for service discovery, or use it to manage routing rules, filters, and load balancing across your system.
+
+Here is the comparison:
+
+- Microservice call without Zuul:
+
+  ![](res/zuul1.png)
+
+- Microservice call with Zuul:
+
+  ![](res/zuul2.png)
+
+- Microsrrvice call with Zuul & Eureka:
+
+  ![](res/zuul3.png)
+
+Here zuul.routes.producer.url will route incoming traffic to request for /producer to the employee-producer microservice. Similar routes can be added for other microservices as well.
+
+Async systems operate differently, with generally one thread per CPU core handling all requests and responses. The lifecycle of the request and response is handled through events and callbacks. Because there is not a thread for each request, the cost of connections is cheap. This is the cost of a file descriptor, and the addition of a listener. Whereas the cost of a connection in the blocking model is a thread and with heavy memory and system overhead. There are some efficiency gains because data stays on the same CPU, making better use of CPU level caches and requiring fewer context switches. The fallout of backend latency and “retry storms” (customers and devices retrying requests when problems occur) is also less stressful on the system because connections and increased events in the queue are far less expensive than piling up threads.
+
+![](res/zuul4.png)
+
+The advantages of async systems sound glorious, but the above benefits come at a cost to operations. Blocking systems are easy to grok and debug. A thread is always doing a single operation so the thread’s stack is an accurate snapshot of the progress of a request or spawned task; and a thread dump can be read to follow a request spanning multiple threads by following locks. An exception thrown just pops up the stack. A “catch-all” exception handler can cleanup everything that isn’t explicitly caught.
+
+Async, by contrast, is callback based and driven by an event loop. The event loop’s stack trace is meaningless when trying to follow a request. It is difficult to follow a request as events and callbacks are processed, and the tools to help with debugging this are sorely lacking in this area. Edge cases, unhandled exceptions, and incorrectly handled state changes create dangling resources resulting in ByteBuf leaks, file descriptor leaks, lost responses, etc. These types of issues have proven to be quite difficult to debug because it is difficult to know which event wasn’t handled properly or cleaned up appropriately.
+
+![](res/zuul5.png)
+
+
+
+### Eureka
+
+
+
+### Ribbon
+
+
+
+### RabbitMQ
+
+
+
+### Docker
 
 
 
@@ -135,7 +248,7 @@ OAuth 2 is an authorization framework that enables applications to obtain limite
 
 ## Demo
 
-[YouTube](https://youtu.be/_dbgT-g96uU)
+Video: [YouTube](https://youtu.be/_dbgT-g96uU)
 
 ## About us
 
@@ -150,6 +263,6 @@ TAC Inc. is a multinational technology company that develops and sells consumer 
 
 ## License
 
-[MIT](https://github.com/TACUnicorn/Document/blob/master/LICENSE) License
+[MIT License](https://github.com/TACUnicorn/Document/blob/master/LICENSE)
 
 Copyright (c) 2018 TAC Inc.
