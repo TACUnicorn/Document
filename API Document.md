@@ -2,8 +2,6 @@
 
 [TOC]
 
-
-
 ## Warehouse
 
 ### Use Scenario
@@ -22,42 +20,42 @@
 
 - product_transfer
 
-  | domain     | type | comment             |
-  | ---------- | ---- | ------------------- |
-  | id         |      |                     |
-  | number     |      |                     |
-  | time       |      |                     |
-  | product_id |      |                     |
-  | type       |      | Put / fetch         |
-  | state      |      | processing/finished |
+  | Domain     | Type        |
+  | ---------- | ----------- |
+  | id         | INT         |
+  | number     | INT         |
+  | time       | Datetime    |
+  | product_id | INT         |
+  | type       | VARCHAR(20) |
+  | state      | INT         |
 
 - product
 
-  | domain | type | comment |
-  | ------ | ---- | ------- |
-  | id     |      |         |
-  | name   |      |         |
-  | price  |      |         |
-  | remain |      |         |
+  | Domain | Type        |
+  | ------ | ----------- |
+  | id     | INT         |
+  | name   | VARCHAR(20) |
+  | price  | INT         |
+  | remain | INT         |
 
 - material
 
-  | domain | type | comment |
-  | ------ | ---- | ------- |
-  | id     |      |         |
-  | name   |      |         |
-  | number |      |         |
+  | Domain | Type        |
+  | ------ | ----------- |
+  | id     | INT         |
+  | name   | VARCHAR(20) |
+  | number | INT         |
 
 - material_transfer
 
-  | domain      | type | comment            |
-  | ----------- | ---- | ------------------ |
-  | id          |      |                    |
-  | remain      |      |                    |
-  | time        |      |                    |
-  | material_id |      |                    |
-  | type        |      | Put / fetch        |
-  | state       |      | Processin/finished |
+  | Domain      | Type     |
+  | ----------- | -------- |
+  | id          | INT      |
+  | remain      | INT      |
+  | time        | Datetime |
+  | material_id | INT      |
+  | type        | INT      |
+  | state       | INT      |
 
 ### API
 
@@ -213,13 +211,13 @@
 
 ### ER Design
 
-| Domain     |      |      |
-| ---------- | ---- | ---- |
-| Id         |      |      |
-| product_id |      |      |
-| number     |      |      |
-| state      |      |      |
-| time       |      |      |
+| Domain     | type     | commit |
+| ---------- | -------- | ------ |
+| Id         | INT      |        |
+| product_id | INT      |        |
+| number     | INT      |        |
+| state      | INT      |        |
+| time       | Datetime |        |
 
 ### API
 
@@ -307,15 +305,15 @@
 
 ### ER Design
 
-| Domain        |      |      |
-| ------------- | ---- | ---- |
-| order_id      |      |      |
-| material_id   |      |      |
-| material_name |      |      |
-| material_no   |      |      |
-| amount        |      |      |
-| time          |      |      |
-| oem           |      |      |
+| Domain        | Type        |
+| ------------- | ----------- |
+| order_id      | INT         |
+| material_id   | INT         |
+| material_name | VARCHAR(20) |
+| material_no   | INT         |
+| amount        | INT         |
+| time          | Datetime    |
+| oem           | VARCHAR(20) |
 
 ## Components Adapter
 
@@ -333,13 +331,13 @@
 
 ### ER Design
 
-| Domain       |      |      |
-| ------------ | ---- | ---- |
-| order_id     |      |      |
-| component_id |      |      |
-| component_no |      |      |
-| amount       |      |      |
-| time         |      |      |
+| Domain       | Type     |
+| ------------ | -------- |
+| order_id     | INT      |
+| component_id | INT      |
+| component_no | INT      |
+| amount       | INT      |
+| time         | Datetime |
 
 ## Bank Adapter
 
@@ -396,13 +394,13 @@
 
 ### ER Design
 
-| Domain      |      |                               |
-| ----------- | ---- | ----------------------------- |
-| id          |      |                               |
-| type        |      | Customer/oem/commpent/experss |
-| relation_id |      |                               |
-| amount      |      |                               |
-| time        |      |                               |
+| Domain      | Type        |
+| ----------- | ----------- |
+| id          | INT         |
+| type        | VARCHAR(20) |
+| relation_id | INT         |
+| amount      | INT         |
+| time        | Datetime    |
 
 URL
 
@@ -529,12 +527,12 @@ Response
 
 ### ER Design
 
-| Domain      |      |      |
-| ----------- | ---- | ---- |
-| id          |      |      |
-| order_id    |      |      |
-| state       |      |      |
-| create_time |      |      |
+| Domain      | Type     |
+| ----------- | -------- |
+| id          | INT      |
+| order_id    | INT      |
+| state       | INT      |
+| create_time | Datetime |
 
 ## Deployment
 
